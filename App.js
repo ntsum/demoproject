@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
 export default function App() {
+  const [enteredGoal, setEnteredGoal] = useState("");
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  function goalInputHandler(enteredText) {
+    setEnteredGoal(enteredText);
+  }
+
+  const addGoalHandler = () => {
+    setCourseGoals(currentGoals => [...currentGoals, enteredGoal]);
+  };
+
   return (
-    <View style={{ padding: 50 }}>
+    <View style={styles.screen}>
       <View
         style={{
           flexDirection: "row",
@@ -19,18 +30,22 @@ export default function App() {
             borderWidth: 1,
             padding: 10
           }}
+          onChangeText={goalInputHandler}
+          value={enteredGoal}
         />
-        <Button title="Add" />
+        <Button title="Add" onPress={addGoalHandler} />
+      </View>
+      <View>
+        {courseGoals.map(goal => (
+          <Text key={goal}>{goal}</Text>
+        ))}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+  screen: {
+    padding: 50
   }
 });
